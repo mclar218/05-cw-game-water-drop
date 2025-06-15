@@ -1,6 +1,9 @@
 // Variables to control game state
 let gameRunning = false; // Keeps track of whether game is active or not
 let dropMaker; // Will store our timer that creates drops regularly
+let timer = 30;
+let timerInterval;
+let score = 0;
 
 // Wait for button click to start the game
 document.getElementById("start-btn").addEventListener("click", startGame);
@@ -10,9 +13,39 @@ function startGame() {
   if (gameRunning) return;
 
   gameRunning = true;
+  timer = 30;
+  updateTimer();
+
+  // Start countdown timer
+  timerInterval = setInterval(() => {
+    timer--;
+    updateTimer();
+    if (timer <= 0) {
+      clearInterval(timerInterval);
+      clearInterval(dropMaker);
+      gameRunning = false;
+      // Optionally: alert('Time is up!');
+    }
+  }, 1000);
 
   // Create new drops every second (1000 milliseconds)
   dropMaker = setInterval(createDrop, 1000);
+}
+
+function updateTimer() {
+  document.getElementById('time').textContent = timer;
+}
+
+function updateScore(feedback) {
+  const scoreElem = document.getElementById('score');
+  scoreElem.textContent = score;
+  if (feedback === 'plus') {
+    scoreElem.classList.add('score-plus');
+    setTimeout(() => scoreElem.classList.remove('score-plus'), 300);
+  } else if (feedback === 'minus') {
+    scoreElem.classList.add('score-minus');
+    setTimeout(() => scoreElem.classList.remove('score-minus'), 300);
+  }
 }
 
 function createDrop() {
@@ -20,16 +53,26 @@ function createDrop() {
   const drop = document.createElement("div");
   drop.className = "water-drop";
 
+  // Randomly decide if this is a blue or brown drop (50/50 chance)
+  const isBrown = Math.random() < 0.5;
+  if (isBrown) {
+    drop.classList.add('brown-drop');
+  }
+
   // Make drops different sizes for visual variety
-  const initialSize = 60;
+  const initialWidth = 60;
   const sizeMultiplier = Math.random() * 0.8 + 0.5;
-  const size = initialSize * sizeMultiplier;
-  drop.style.width = drop.style.height = `${size}px`;
+  const width = initialWidth * sizeMultiplier;
+  const height = width * 1.33; // Keep teardrop aspect ratio
+  drop.style.setProperty('--drop-width', `${width}px`);
+  drop.style.setProperty('--drop-height', `${height}px`);
+  drop.style.width = `${width}px`;
+  drop.style.height = `${height}px`;
 
   // Position the drop randomly across the game width
-  // Subtract 60 pixels to keep drops fully inside the container
+  // Subtract max width to keep drops fully inside the container
   const gameWidth = document.getElementById("game-container").offsetWidth;
-  const xPosition = Math.random() * (gameWidth - 60);
+  const xPosition = Math.random() * (gameWidth - width);
   drop.style.left = xPosition + "px";
 
   // Make drops fall for 4 seconds
@@ -37,6 +80,18 @@ function createDrop() {
 
   // Add the new drop to the game screen
   document.getElementById("game-container").appendChild(drop);
+
+  // Add click event for interactivity
+  drop.addEventListener("click", () => {
+    if (isBrown) {
+      score--;
+      updateScore('minus');
+    } else {
+      score++;
+      updateScore('plus');
+    }
+    drop.remove();
+  });
 
   // Remove drops that reach the bottom (weren't clicked)
   drop.addEventListener("animationend", () => {

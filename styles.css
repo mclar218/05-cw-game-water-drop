@@ -86,24 +86,51 @@ body {
     flex: 0 1 auto;  /* Don't grow, can shrink, auto basis */
     font-size: 24px;
     font-weight: bold;
+    transition: color 0.2s;
+}
+
+.score-plus {
+    color: #4FCB53;  /* Green for positive score change */
+}
+
+.score-minus {
+    color: #F5402C;  /* Red for negative score change */
 }
 
 .water-drop {
     position: absolute;
-    width: 60px;  /* increased from 40px */
-    height: 60px; /* increased from 40px */
-    background-color: #0099ff;
-    border-radius: 50%;
+    /* Use CSS variables for size */
+    --drop-width: 60px;
+    --drop-height: 80px;
+    width: var(--drop-width);
+    height: var(--drop-height);
+    background-color: #2E9DF7;
+    /* Improved teardrop shape with a rounder bottom using clip-path */
+    clip-path: polygon(
+        50% 0%,
+        80% 25%,
+        100% 62%,
+        85% 90%,
+        50% 100%,
+        15% 90%,
+        0% 62%,
+        20% 25%
+    );
+    border-radius: 60% 60% 100% 100% / 60% 60% 100% 100%;
     animation: dropFall linear forwards;
     transform-origin: center;
     cursor: pointer;
-    padding: 15px;  /* Add padding for larger click area */
-    margin: -15px;  /* Offset padding to maintain visual size */
-    transition: transform 0.1s ease;  /* Smooth hover effect */
+    transition: transform 0.1s ease;
+    box-shadow: 0 4px 16px 0 #2E9DF766;
+}
+
+.brown-drop {
+    background-color: #8B5C2A;
+    box-shadow: 0 4px 16px 0 #8B5C2A66;
 }
 
 .water-drop:hover {
-    transform: scale(1.1);  /* Slight grow effect on hover */
+    transform: scale(1.1);
 }
 
 .bad-drop {
@@ -142,4 +169,19 @@ body {
     #game-container {
         height: 70vh;
     }
+}
+
+.cw-logo {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 56px;
+    height: auto;
+    z-index: 1000;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+}
+
+.cw-logo:hover {
+    opacity: 1;
 }
