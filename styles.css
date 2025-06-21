@@ -30,7 +30,7 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
 }
 
 .game-wrapper {
@@ -143,6 +143,7 @@ body {
     margin-top: 0;
     margin-bottom: 5px;  /* reduced from 20px */
     text-align: center;
+    font-family: 'Montserrat', Arial, sans-serif;
 }
 
 .game-tagline {
@@ -150,6 +151,22 @@ body {
     font-size: 18px;
     margin-bottom: 20px;
     text-align: center;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.difficulty-panel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+#goal-display {
+    margin-left: 16px;
+    font-weight: bold;
+    color: #2E9DF7;
 }
 
 @keyframes dropFall {
@@ -173,15 +190,40 @@ body {
 
 .cw-logo {
     position: fixed;
-    right: 24px;
+    left: 24px;
     bottom: 24px;
-    width: 56px;
+    width: 120px;
     height: auto;
     z-index: 1000;
-    opacity: 0.85;
+    opacity: 0.92;
     transition: opacity 0.2s;
 }
 
 .cw-logo:hover {
     opacity: 1;
+}
+
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 18px 0 10px 0;
+    background: none;
+    font-size: 16px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 900;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.footer a {
+    color: #2E9DF7;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.footer a:hover {
+    color: #FFC907;
+    text-decoration: underline;
 }

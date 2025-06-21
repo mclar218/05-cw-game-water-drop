@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Water Drop Game</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="game-wrapper">
@@ -15,11 +16,24 @@
             <div class="timer">Time: <span id="time">30</span>s</div>
             <button id="start-btn">Start Game</button>
         </div>
-        
+        <div class="difficulty-panel">
+            <label for="difficulty">Difficulty:</label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Hard</option>
+            </select>
+            <span id="goal-display"></span>
+        </div>
         <div id="game-container">
         </div>
     </div>
     <img src="img/cw_logo.png" alt="Charity: Water Logo" class="cw-logo">
+    <footer class="footer">
+        <a href="https://www.charitywater.org/main" target="_blank" rel="noopener noreferrer">
+            Learn more at charity: water
+        </a>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>

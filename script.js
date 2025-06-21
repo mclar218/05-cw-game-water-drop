@@ -5,6 +5,15 @@ let timer = 30;
 let timerInterval;
 let score = 0;
 
+const DIFFICULTY_SETTINGS = {
+  easy:   { time: 40, dropRate: 700, winScore: 15 }, // Faster drops for Easy
+  normal: { time: 30, dropRate: 700, winScore: 20 }, // Match dropRate to Easy
+  hard:   { time: 20, dropRate: 700,  winScore: 30 }
+};
+
+let difficulty = 'normal';
+let winScore = DIFFICULTY_SETTINGS[difficulty].winScore;
+
 // Wait for button click to start the game
 document.getElementById("start-btn").addEventListener("click", startGame);
 
@@ -13,8 +22,12 @@ function startGame() {
   if (gameRunning) return;
 
   gameRunning = true;
-  timer = 30;
+  timer = DIFFICULTY_SETTINGS[difficulty].time;
+  winScore = DIFFICULTY_SETTINGS[difficulty].winScore;
   updateTimer();
+  updateGoalDisplay();
+  score = 0;
+  updateScore();
 
   // Start countdown timer
   timerInterval = setInterval(() => {
@@ -24,16 +37,26 @@ function startGame() {
       clearInterval(timerInterval);
       clearInterval(dropMaker);
       gameRunning = false;
-      // Optionally: alert('Time is up!');
+      setTimeout(() => {
+        if (score >= winScore) {
+          alert('You win!');
+        } else {
+          alert('Time is up! Try again.');
+        }
+      }, 100);
     }
   }, 1000);
 
-  // Create new drops every second (1000 milliseconds)
-  dropMaker = setInterval(createDrop, 1000);
+  // Create new drops at the selected rate
+  dropMaker = setInterval(createDrop, DIFFICULTY_SETTINGS[difficulty].dropRate);
 }
 
 function updateTimer() {
   document.getElementById('time').textContent = timer;
+}
+
+function updateGoalDisplay() {
+  document.getElementById('goal-display').textContent = `Goal: ${winScore} points`;
 }
 
 function updateScore(feedback) {
@@ -98,3 +121,10 @@ function createDrop() {
     drop.remove(); // Clean up drops that weren't caught
   });
 }
+
+// Difficulty setting change listener
+document.getElementById('difficulty').addEventListener('change', (e) => {
+  difficulty = e.target.value;
+  winScore = DIFFICULTY_SETTINGS[difficulty].winScore;
+  updateGoalDisplay();
+});
